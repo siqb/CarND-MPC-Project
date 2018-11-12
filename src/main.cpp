@@ -100,9 +100,6 @@ int main() {
           // speed (float) - The current velocity in mph.
           double v = j[1]["speed"];
 
-          // transform waypoints to be from car's perspective
-          // this means we can consider px = 0, py = 0, and psi = 0
-          // greatly simplifying future calculations
           vector<double> waypoints_x;
           vector<double> waypoints_y;
           for (int i = 0; i < ptsx.size(); i++) {
@@ -116,18 +113,7 @@ int main() {
           Eigen::Map<Eigen::VectorXd> waypoints_y_eig(&waypoints_y[0], 6);
 
           auto coeffs = polyfit(waypoints_x_eig, waypoints_y_eig, 3);
-
-
-          // The polynomial is fitted to a straight line so a polynomial with
-          // order 1 is sufficient.
-          
-          //auto coeffs = polyfit(ptsx, ptsy, 1);      
-          
-          // The cross track error is calculated by evaluating at polynomial at x, f(x)
-          // and subtracting y.
           double cte = polyeval(coeffs, px) - py;
-          // Due to the sign starting at 0, the orientation error is -f'(x).
-          // derivative of coeffs[0] + coeffs[1] * x -> coeffs[1]
           double epsi = psi - atan(coeffs[1]);
 
           /*
