@@ -141,15 +141,20 @@ int main() {
 
           // State: [x,y,psi,v,cte,epsi]
           Eigen::VectorXd state(6);
-          state << px, py, psi, v, cte, epsi;
-          std::vector<double> x_vals = {state[0]};
-          std::vector<double> y_vals = {state[1]};
-          std::vector<double> psi_vals = {state[2]};
-          std::vector<double> v_vals = {state[3]};
-          std::vector<double> cte_vals = {state[4]};
-          std::vector<double> epsi_vals = {state[5]};
-          std::vector<double> delta_vals = {};
-          std::vector<double> a_vals = {};
+          
+          //std::vector<double> x_vals = {state[0]};
+          //std::vector<double> y_vals = {state[1]};
+          //std::vector<double> psi_vals = {state[2]};
+          //std::vector<double> v_vals = {state[3]};
+          //std::vector<double> cte_vals = {state[4]};
+          //std::vector<double> epsi_vals = {state[5]};
+          //std::vector<double> delta_vals = {};
+          //std::vector<double> a_vals = {};
+          
+          // This change made it stop going crazy - why?
+          //state << px, py, psi, v, cte, epsi;
+          state << 0, 0, 0, v, cte, epsi;
+	      
           auto result = mpc.Solve(state, coeffs);
 
           //x_vals.push_back(result[0]);
