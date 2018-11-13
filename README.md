@@ -14,6 +14,10 @@ We’ve added a variable to our state called LfL_fLf​ which measures the dista
 
 The prediction horizon is the duration over which future predictions are made. N is the number of steps into the future we want to predict and dt is the time that elapses between them.
 
+Why can't we just choose a large N? Because the vehicle state is constantly changing in unpredictable ways so predicting too many steps into the future isn't necessary. It is also computationally expensive because N determines the number of variables that must be optimized by the MPC. As a matter of fact, every time the vehicle proceeds along its predicted trajectory, it recomputes the entire predicted trajectory all over again. This ensures that the trajectory always takes into account all of the latest influences on the vehcile's state.
+
+
+
 These are very important yet tricky hyperparameters to tune. If either one is too large or too small, the car won't drive properly on the track. I tuned mainly through trial and error.
 
 ## Polynomial Fitting and MPC Preprocessing
