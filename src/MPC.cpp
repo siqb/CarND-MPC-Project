@@ -60,7 +60,16 @@ class FG_eval {
     // any anything you think may be beneficial.
 
     // The part of the cost based on the reference state.
-    // How to get the multipliers? Experimentation.
+    // How to get the multipliers? 
+    //
+    // I did a lot of experimentation to get the right cost 
+    // multipliers. However, I did eventually need to
+    // get ideas from others to get the right combination to
+    // get the car to drive properly
+    //
+    // The idea is simple though - associated a higher cost
+    // in proportion to the impact of certain aspects of
+    // the state
     for (int t = 0; t < N; t++) {
       fg[0] += 3000*CppAD::pow(vars[cte_start + t], 2);
       fg[0] += 3000*CppAD::pow(vars[epsi_start + t], 2);
