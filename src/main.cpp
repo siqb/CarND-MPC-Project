@@ -103,18 +103,18 @@ int main() {
           vector<double> waypoints_x;
           vector<double> waypoints_y;
           for (int i = 0; i < ptsx.size(); i++) {
-            double dx = ptsx[i] - px;
-            double dy = ptsy[i] - py;
-            waypoints_x.push_back(dx * cos(-psi) - dy * sin(-psi));
-            waypoints_y.push_back(dx * sin(-psi) + dy * cos(-psi));
+            double dx = ptsx[i]-px;
+            double dy = ptsy[i]-py;
+            waypoints_x.push_back(dx*cos(-psi)-dy*sin(-psi));
+            waypoints_y.push_back(dx*sin(-psi)+dy*cos(-psi));
           }
 
           Eigen::Map<Eigen::VectorXd> waypoints_x_eig(&waypoints_x[0], 6);
           Eigen::Map<Eigen::VectorXd> waypoints_y_eig(&waypoints_y[0], 6);
 
           auto coeffs = polyfit(waypoints_x_eig, waypoints_y_eig, 3);
-          double cte = polyeval(coeffs, px) - py;
-          double epsi = psi - atan(coeffs[1]);
+          double cte = polyeval(coeffs, px)-py;
+          double epsi = psi-atan(coeffs[1]);
 
           /*
           * TODO: Calculate steering angle and throttle using MPC.
