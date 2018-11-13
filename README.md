@@ -2,6 +2,19 @@
 Self-Driving Car Engineer Nanodegree Program
 
 ---
+## The Model
+
+The motion model used in this project calculates the current vehicle state and actuations base on the previous state and actuations.
+
+The motion model we implemented is basically just these equations. In our lectures, we called it the "global kinematic model." It's just a set of equations that realistically approximate the way a car moves.
+
+We’ve added a variable to our state called LfL_fLf​ which measures the distance between the front of the vehicle and its center of gravity. The larger the vehicle , the slower the turn rate. 
+
+## Timestep Length and Elapsed Duration (N & dt)
+
+The prediction horizon is the duration over which future predictions are made. N is the number of steps into the future we want to predict and dt is the time that elapses between them.
+
+These are very important yet tricky hyperparameters to tune. If either one is too large or too small, the car won't drive properly on the track. I tuned mainly through trial and error.
 
 ## Dependencies
 
