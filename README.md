@@ -8,6 +8,10 @@ The motion model used in this project calculates the current vehicle state and a
 
 The motion model we implemented is basically just these equations. In our lectures, we called it the "global kinematic model." It's just a set of equations that realistically approximate the way a car moves.
 
+The state of the vehicle is modelled by the x and y coordinates, velocity, and the yaw angle. This intuitively makes sense because that's all a car is expeceted to do. It can't fly off the ground in the Z direction, after all. 
+
+The actuation of the vehicle is modelled by the steering angle and the acceleration. Again, this makes intuitive sense because essentially all a car can do is accelerate forward/backwards and turn left/right. Technically, braking is not the same same thing as negative acceleration but for simplicity, that's the way we're modelling it.
+
 We’ve added a variable to our state called LfL_fLf​ which measures the distance between the front of the vehicle and its center of gravity. The larger the vehicle , the slower the turn rate. 
 
 ## Timestep Length and Elapsed Duration (N & dt)
