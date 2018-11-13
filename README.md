@@ -24,7 +24,7 @@ Additonally, the solver has a maximum run time of 500ms. I did not want to play 
 
 Well then if the horizon is always vanishing and the future steps are constantly recalculated, why can't we just choose a very small N? Because then the optimizer won't create a good trajectory because if we take out future time steps, there won't be much prediction happening in the moel predictive controller!
 
-These are very important yet tricky hyperparameters to tune. If either one is too large or too small, the car won't drive properly on the track. I tuned mainly through trial and error. I started with N=10 and dt=0.1 because 0.1 is the same as the actuation latency (100ms) and 10x0.1 = 1 second. Then, I reduced N as much as I could while still maintaining good performance. It turns out you cannot reduce it much. I settled on N=9. 
+These are very important yet tricky hyperparameters to tune. If either one is too large or too small, the car won't drive properly on the track. I tuned mainly through trial and error. I started with N=10 and dt=0.1 because 0.1 is the same as the actuation latency (100ms) and 10x0.1 = 1 second. Also, I knew that larger values of dt lead to discretization error due to less frequent actuations. Then, I reduced N as much as I could while still maintaining good performance. It turns out you cannot reduce it much. I settled on N=9. 
 
 If I had time in the future, I would consider implementing some kind of "dynamic horizon" which would modulate N and dt in real time based on road and vehicle conditions. But there is no need to do this on this simulator.
 
