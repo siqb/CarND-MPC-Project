@@ -12,19 +12,27 @@ The state of the vehicle is modelled by the x and y coordinates, velocity, and t
 
 The actuation of the vehicle is modelled by the steering angle and the acceleration. Again, this makes intuitive sense because essentially all a car can do is accelerate forward/backwards and turn left/right. Technically, braking is not the same same thing as negative acceleration but for simplicity, that's the way we're modelling it.
 
-We’ve added a variable to our state called LfL_fLf​ which measures the distance between the front of the vehicle and its center of gravity. The larger the vehicle , the slower the turn rate. 
+We’ve added a variable to our state called Lf which measures the distance between the front of the vehicle and its center of gravity. The larger the vehicle , the slower the turn rate. 
 
 ## Timestep Length and Elapsed Duration (N & dt)
 
 The prediction horizon is the duration over which future predictions are made. N is the number of steps into the future we want to predict and dt is the time that elapses between them.
 
-Why can't we just choose a large N? Because the vehicle state is constantly changing in unpredictable ways so predicting too many steps into the future isn't necessary. It is also computationally expensive because N determines the number of variables that must be optimized by the MPC. As a matter of fact, every time the vehicle proceeds along its predicted trajectory, it recomputes the entire predicted trajectory all over again. This ensures that the trajectory always takes into account all of the latest influences on the vehcile's state.
+Why can't we just choose arbitrarily large N? Because the vehicle state is constantly changing in unpredictable ways so predicting too many steps into the future isn't necessary. It is also computationally expensive because N determines the number of variables that must be optimized by the MPC. This can hinder performance. As a matter of fact, every time the vehicle proceeds along its predicted trajectory, it recomputes the entire predicted trajectory all over again. This ensures that the trajectory always takes into account all of the latest influences on the vehcile's state. 
 
+Additonally, the solver has a maximum run time of 500ms. I did not want to play with this parameter. If I get time in the future, I would like to go back and calculate my computer's calculation time to profile what kind of compute latency is added by increasing N too much and if it causes the solver to time out or not. Note: I am talking about compute latency here, not actuation latency (which will be discussed below).
 
+Well then if the horizon is always vanishing and the future steps are constantly recalculated, why can't we just choose a very small N? Because then the optimizer won't create a good trajectory because if we take out future time steps, there won't be much prediction happening in the moel predictive controller!
 
-These are very important yet tricky hyperparameters to tune. If either one is too large or too small, the car won't drive properly on the track. I tuned mainly through trial and error.
+These are very important yet tricky hyperparameters to tune. If either one is too large or too small, the car won't drive properly on the track. I tuned mainly through trial and error. I started with N=10 and dt=0.1 because 0.1 is the same as the actuation latency (100ms) and 10x0.1 = 1 second. Then, I reduced N as much as I could while still maintaining good performance. It turns out you cannot reduce it much. I settled on N=9. 
 
 ## Polynomial Fitting and MPC Preprocessing
+
+Waypoints are map locations of where the vehicle is supposed to go but with no trajectory/path to get it there. We fit a polynomial to our waypoints in order to generate a reference trajctory. This trajectory connects the dots between the map waypoints. Once we have this refernce trajectory,we can use it for a few different things:
+
+1. Determine the cross track error based on the x and y position of the vehcile's current state. The cross track error represents how far the vehicle is from the reference trajectory.
+2. Determine the error of the angle required to stay on the reference trajectory based on the yaw angle of the vehicle's current state.
+3. Pass the coeffcients along to the Solve() function in order to optimize the state with respect to the refernce trajectory.
 
 ## Model Predictive Control with Latency
 
