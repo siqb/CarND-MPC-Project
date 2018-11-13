@@ -14,7 +14,7 @@ The actuation of the vehicle is modelled by the steering angle and the accelerat
 
 We’ve added a variable to our state called Lf which measures the distance between the front of the vehicle and its center of gravity. The larger the vehicle , the slower the turn rate. 
 
-![alt text](https://github.com/siqb/CarND-MPC-Project "Equations")
+![alt text](https://github.com/siqb/CarND-MPC-Project/blob/master/global_kinematic_model_equations.png "Equations")
 
 ## Timestep Length and Elapsed Duration (N & dt)
 
