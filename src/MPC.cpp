@@ -71,8 +71,13 @@ class FG_eval {
     for (int t = 0; t < N - 1; t++) {
       fg[0] += 5*CppAD::pow(vars[delta_start + t], 2);
       fg[0] += 5*CppAD::pow(vars[a_start + t], 2);
-      // Steering becomes more stable with this.
+      // Steering becomes MUCH more stable with this.
       // This is the penalty for steering angle with velocity
+      // In other words, it's the penalty for steering too hard
+      // at high speeds.
+      // I am commenting it out because I saw this somewhere 
+      // else and did not come up with this code. The car
+      // still drives well enough without it though.
       //fg[0] += 700*CppAD::pow(vars[delta_start + t] * vars[v_start+t], 2);
     }
 
