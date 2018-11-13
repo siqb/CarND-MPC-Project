@@ -26,9 +26,11 @@ Well then if the horizon is always vanishing and the future steps are constantly
 
 These are very important yet tricky hyperparameters to tune. If either one is too large or too small, the car won't drive properly on the track. I tuned mainly through trial and error. I started with N=10 and dt=0.1 because 0.1 is the same as the actuation latency (100ms) and 10x0.1 = 1 second. Then, I reduced N as much as I could while still maintaining good performance. It turns out you cannot reduce it much. I settled on N=9. 
 
+If I had time in the future, I would consider implementing some kind of "dynamic horizon" which would modulate N and dt in real time based on road and vehicle conditions. But there is no need to do this on this simulator.
+
 ## Polynomial Fitting and MPC Preprocessing
 
-Waypoints are map locations of where the vehicle is supposed to go but with no trajectory/path to get it there. We fit a polynomial to our waypoints in order to generate a reference trajctory. This trajectory connects the dots between the map waypoints. Once we have this refernce trajectory,we can use it for a few different things:
+Waypoints are map locations of where the vehicle is supposed to go but with no trajectory/path to get it there. We fit a polynomial to our waypoints in order to generate a reference trajctory. This trajectory connects the dots between the map waypoints. I used a 3rd order polynomial to fit the waypoints because 3rd order should be enough to fit any of the curves on the simulator track and possibly even most roads in real life. Once we have this refernce trajectory,we can use it for a few different things:
 
 1. Determine the cross track error based on the x and y position of the vehcile's current state. The cross track error represents how far the vehicle is from the reference trajectory.
 2. Determine the error of the angle required to stay on the reference trajectory based on the yaw angle of the vehicle's current state.
