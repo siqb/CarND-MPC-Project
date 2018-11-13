@@ -16,6 +16,16 @@ The prediction horizon is the duration over which future predictions are made. N
 
 These are very important yet tricky hyperparameters to tune. If either one is too large or too small, the car won't drive properly on the track. I tuned mainly through trial and error.
 
+## Polynomial Fitting and MPC Preprocessing
+
+## Model Predictive Control with Latency
+
+In the real world, electrical and mechincal systems always have some amount of latency. That means that a lot can change from the time a car decides it wants to do something until the moment when it actually happens. Cars move in such high speed, dynamic, unsafe enviornments that disaster can strike in the blink of an eye. In a less disatrous scenario, this latency can lead to an uncomfortable ride.
+
+The way we can deal with this is by knowing how long the latency is and then holding our actuation command for the expected duration of the latency. This prevents actuation commands for future timesteps from getting sent too soon and leads to a more stable drive.
+
+In this project, we assume 100ms latency from command to actuation. Of course, our computers on which we are doing our projects don't have any mechanical components that they are actuating and so they execute much fast than this. Therefore, we simulate the latency by making the main thread sleep for 100ms before sending the command. Although it's not entirely true, we assume the command has zero latency on our computers. It is negligible in comparison to 100ms, of course. 
+
 ## Dependencies
 
 * cmake >= 3.5
